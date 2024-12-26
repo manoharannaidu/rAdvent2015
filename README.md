@@ -1,6 +1,6 @@
 # Advent of Code 2015 - Solutions in R
 
-Welcome to my solutions for [Advent of Code 2015](https://adventofcode.com/2015), implemented entirely in R. This repository contains code and explanations for each problem in the 25-day coding challenge.
+Welcome to my solutions for [Advent of Code 2015](https://adventofcode.com/2015), implemented entirely in R. This repository contains code for each problem in the 25-day coding challenge.
 
 ---
 
