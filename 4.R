@@ -1,4 +1,5 @@
 # Libraries
+library(microbenchmark)
 library(openssl)
 library(parallel)
 
@@ -34,7 +35,7 @@ parallelize <- function(secret_key,
                         num_chars_find = 5,
                         string_find = "00000") {
   cl <- makeCluster(num_cores)
-  clusterExport(cl, c("secret_key", "find_smallest_num_range", "md5")) # Export openssl library
+  clusterExport(cl, c("secret_key", "find_smallest_num_range", "md5"))
   
   result <- NULL
   found <- FALSE
@@ -63,26 +64,28 @@ parallelize <- function(secret_key,
 
 # Run
 ## Part 1
-start_time <- Sys.time()
 cat("The smallest number for part1 is:",
     parallelize(secret_key),
     "\n")
-end_time <- Sys.time()
-time_taken <- end_time - start_time
-time_taken
 
 ## Part 2
-start_time <- Sys.time()
 cat(
   "The smallest number for part2 is:",
   parallelize(
     secret_key,
-    batch_size = 100000,
     num_chars_find = 6,
     string_find = "000000"
   ),
   "\n"
 )
-end_time <- Sys.time()
-time_taken <- end_time - start_time
-time_taken
+
+# Benchmarking
+microbenchmark(
+  part1 = parallelize(secret_key),
+  part2 = parallelize(
+    secret_key,
+    num_chars_find = 6,
+    string_find = "000000"
+  ),
+  times = 5
+)
