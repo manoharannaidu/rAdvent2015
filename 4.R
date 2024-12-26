@@ -30,7 +30,7 @@ find_smallest_num_range <- function(start,
 }
 
 parallelize <- function(secret_key,
-                        num_cores = detectCores(logical = FALSE) - 1,
+                        num_cores = detectCores(),
                         batch_size = 10000,
                         num_chars_find = 5,
                         string_find = "00000") {
@@ -73,6 +73,7 @@ cat(
   "The smallest number for part2 is:",
   parallelize(
     secret_key,
+    batch_size = 100000,
     num_chars_find = 6,
     string_find = "000000"
   ),
@@ -84,8 +85,9 @@ microbenchmark(
   part1 = parallelize(secret_key),
   part2 = parallelize(
     secret_key,
+    batch_size = 100000,
     num_chars_find = 6,
     string_find = "000000"
   ),
-  times = 5
+  times = 3
 )
