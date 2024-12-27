@@ -42,7 +42,7 @@ part2 <- function(data) {
 # Run
 part1(data)
 part2(data)
-# 
+
 # # Benchmarking
 microbenchmark(
   part1 = part1(data),
