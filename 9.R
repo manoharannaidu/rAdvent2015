@@ -74,7 +74,7 @@ part2 <- function(file_path) {
     add_edge(g, e[1], e[3], -as.numeric(e[5])),
     strsplit(readLines(file_path, n = -1L), " "),
     init = make_graph())
-  -min(sapply(names(G$nodes), FUN = find_shortest_loop_from_src, graph = G))
+  - min(sapply(names(G$nodes), FUN = find_shortest_loop_from_src, graph = G))
 }
 
 # Run
