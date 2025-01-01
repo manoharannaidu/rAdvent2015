@@ -37,12 +37,6 @@ closest_node_notin_list <- function(graph, src, l) {
   names(dists[min(which(!(names(dists) %in% names(l))))])
 }
 
-## Find the farthest node not in a given list
-farthest_node_notin_list <- function(graph, src, l) {
-  dists <- sort(unlist(graph$nodes[[src]]))
-  names(dists[max(which(!(names(dists) %in% names(l))))])
-}
-
 ## Find the length of the shortest path covering all nodes in the graph starting from a given source
 find_shortest_loop_from_src <- function(graph, src) {
   visited <- list()
@@ -62,25 +56,6 @@ find_shortest_loop_from_src <- function(graph, src) {
   sum(unlist(distances))
 }
 
-## Find the length of the longest path covering all nodes in the graph starting from a given source
-find_longest_loop_from_src <- function(graph, src) {
-  visited <- list()
-  visited[[src]] <- T
-  distances <- list()
-  while (T) {
-    if (sum(unname(unlist(visited))) == length(names(graph$nodes))) {
-      break
-    }
-    closest_node <- farthest_node_notin_list(graph, src, visited)
-    if (!closest_node %in% visited) {
-      visited[[closest_node]] <- T
-      distances[[closest_node]] <- graph$nodes[[src]][[closest_node]]
-      src <- closest_node
-    }
-  }
-  sum(unlist(distances))
-}
-
 # Part 1
 part1 <- function(file_path) {
   # Parse txt file to Graph
@@ -88,7 +63,7 @@ part1 <- function(file_path) {
     add_edge(g, e[1], e[3], as.numeric(e[5])),
     strsplit(readLines(file_path, n = -1L), " "),
     init = make_graph())
-  min(sapply(names(G$nodes), FUN = find_shortest_route_from_src, graph =
+  min(sapply(names(G$nodes), FUN = find_shortest_loop_from_src, graph =
                G))
 }
 
@@ -96,10 +71,10 @@ part1 <- function(file_path) {
 part2 <- function(file_path) {
   # Parse txt file to Graph
   G <- Reduce(function(g, e)
-    add_edge(g, e[1], e[3], as.numeric(e[5])),
+    add_edge(g, e[1], e[3], -as.numeric(e[5])),
     strsplit(readLines(file_path, n = -1L), " "),
     init = make_graph())
-  max(sapply(names(G$nodes), FUN = find_longest_loop_from_src, graph = G))
+  -min(sapply(names(G$nodes), FUN = find_shortest_loop_from_src, graph = G))
 }
 
 # Run
